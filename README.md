@@ -1,23 +1,20 @@
-# BirdSong Project
-Testing whether a hypothesized signal (latitude-frequency relation) exists
+# Step three
+Latitude-partitioned frequency overlay visualization based on user-defined percentage bins
 
-### Project Structure:
-This project consists of three parts:
-- Step One: Data Filtering 
-- Step Two: Visualize Frequency Distribution for Each Bird 
-- Step Three: Visualize Frequency Distribution in Geographic Context
+### Note: 
+- metadata file (filtered_metadata_preview.csv) is excluded from this repository.
+To run the project, please run the generate_CSV.py in utils to generate a new csv under /utils/
+- Ensure you have the following libraries installed:
+`pip install librosa numpy matplotlib pandas`
 
-### Important Note:
-Please start by reading the README in the `first` folder, which covers Step One.  
-Step Two builds upon the outputs of Step One (e.g., metadata files).  
-
+### Core Scripts
+- distribution_plot.py: Main visualization entry built upon filtered audio frequency extraction. The script accepts custom latitude percentage partitions from user input, assigns each audio to corresponding latitude bins, accumulates normalized spectral density, and generates concatenated group-wise frequency overlay plots.
 
 ### Limitations:
-- Signal Precision: Fixed parameters for Sample Rate (SR) and N_FFT were used for batch processing. Potential data loss or spectral leakage may occur during audio windowing and STFT, affecting the precision of the resulting frequency fingerprints.
-- Low-Frequency Filtering: A manual high-pass adjustment is applied to clear all activity below 800 Hz in the visualizations. This is intended to eliminate environmental "hum" (e.g., wind or traffic) from field recordings, though it may hide legitimate low-frequency biological signals.
-- Geographic Scope: The dataset is filtered based on estimated European coordinates (Latitude: 35°N to 71°N, Longitude: -25°W to 65°E).
-- Biological Scope: Currently, the filter does not account for specific genus or species; it focuses purely on geographic range and vocalization type.
-- Frequency Scope (SR): Analysis is limited to 0-11025 Hz, (using SR=22050), missing ultra-high-frequency recordings above 11KHz.
-- Frequency Resolution (N_FFT): Limited to approximately 10.77 Hz, caused by the fixed N_FFT size. Closely spaced frequencies cannot be distinguished.
-- Time resolution (HOP_LENGTH): Time resulution limited by a hop interval of 0.023. Rapid acoustic changes details may not be fully captured.
-- Purpose: This is an exploratory tool designed for initial data visualization and filtering.
+(See main README for overall shared limitation)
+- Threshold Arbitrariness: The signal-to-noise separation relies on a fixed threshold (-30 dB), which was determined by empirical estimation. This may incorrectly classify loud background noise as vocalization or omit faint bird calls.
+- Within-Group Comparison Only: Visual brightness reflects only within-group relative frequency peaks, not sample count. Group size differences cannot be identified from plot brightness.
+- Uneven Sample Distribution: Due to sparse bird distribution, some latitude bins contain nearly zero samples, resulting in blank regions in the visualization. Additionally, group sizes vary drastically—some have only 5-6 valid samples, while others contain over 200, creating unbalanced visual contrast across bins.
+
+### exploratory
+A subset of audio samples was manually reviewed to qualitatively assess noise reduction and preservation of birdsong signals.
